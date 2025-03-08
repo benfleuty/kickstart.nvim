@@ -659,7 +659,40 @@ require('lazy').setup({
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        gopls = {},
+        gopls = {
+          settings = {
+            gopls = {
+              staticcheck = true, -- Enable static analysis
+              gofumpt = true, -- Use gofumpt for formatting
+              completeUnimported = true, -- Auto-import missing packages
+              usePlaceholders = true, -- Add placeholders for function parameters
+              analyses = {
+                unusedparams = true, -- Warn for unused function parameters
+                unusedwrite = true, -- Warn for unused writes
+              },
+            },
+          },
+          on_attach = function(client, bufnr)
+            if not bufnr then
+              bufnr = vim.api.nvim_get_current_buf()
+            end
+
+            vim.api.nvim_create_autocmd('BufWritePre', {
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.buf.format { async = false } -- Auto format Go files
+                vim.lsp.buf.code_action {
+                  context = { only = { 'source.organizeImports' } },
+                  apply = true,
+                }
+              end,
+            })
+
+            vim.keymap.set('n', '<leader>fo', function()
+              vim.lsp.buf.code_action { context = { only = { 'source.organizeImports' } }, apply = true }
+            end, { noremap = true, silent = true, desc = 'Organize Imports (Go)' })
+          end,
+        },
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -786,12 +819,12 @@ require('lazy').setup({
           -- `friendly-snippets` contains a variety of premade snippets.
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
-          -- {
-          --   'rafamadriz/friendly-snippets',
-          --   config = function()
-          --     require('luasnip.loaders.from_vscode').lazy_load()
-          --   end,
-          -- },
+          {
+            'rafamadriz/friendly-snippets',
+            config = function()
+              require('luasnip.loaders.from_vscode').lazy_load()
+            end,
+          },
         },
       },
       'saadparwaiz1/cmp_luasnip',
@@ -952,7 +985,7 @@ require('lazy').setup({
     main = 'nvim-treesitter.configs', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
-      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc' },
+      ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim', 'vimdoc', 'go' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {

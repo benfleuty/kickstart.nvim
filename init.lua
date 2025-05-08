@@ -620,6 +620,15 @@ require('lazy').setup({
             vim.keymap.set('n', '<leader>fo', function()
               vim.lsp.buf.code_action { context = { only = { 'source.organizeImports' } }, apply = true }
             end, { noremap = true, silent = true, desc = 'Organize Imports (Go)' })
+
+            vim.keymap.set('n', '<leader>ee', 'oif err != nil {<CR>}<Esc>Oreturn err<esc>', { noremap = true, silent = true, desc = 'if err != nil return' })
+            vim.keymap.set('n', '<leader>ei', 'oif err != nil {<CR>}<Esc>O', { noremap = true, silent = true, desc = 'if err != nil impl' })
+            vim.keymap.set(
+              'n',
+              '<leader>el',
+              'oif err != nil {<CR>}<Esc>Olog.Fatal(err)<Esc>jo<Esc>o',
+              { noremap = true, silent = true, desc = 'if err != nil log err' }
+            )
           end,
         },
         -- pyright = {},

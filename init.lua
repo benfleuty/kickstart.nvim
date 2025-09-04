@@ -618,13 +618,13 @@ require('lazy').setup({
         gopls = {
           settings = {
             gopls = {
-              staticcheck = true, -- Enable static analysis
-              gofumpt = true, -- Use gofumpt for formatting
+              staticcheck = true,        -- Enable static analysis
+              gofumpt = true,            -- Use gofumpt for formatting
               completeUnimported = true, -- Auto-import missing packages
-              usePlaceholders = true, -- Add placeholders for function parameters
+              usePlaceholders = true,    -- Add placeholders for function parameters
               analyses = {
-                unusedparams = true, -- Warn for unused function parameters
-                unusedwrite = true, -- Warn for unused writes
+                unusedparams = true,     -- Warn for unused function parameters
+                unusedwrite = true,      -- Warn for unused writes
               },
             },
           },
@@ -648,8 +648,10 @@ require('lazy').setup({
               vim.lsp.buf.code_action { context = { only = { 'source.organizeImports' } }, apply = true }
             end, { noremap = true, silent = true, desc = 'Organize Imports (Go)' })
 
-            vim.keymap.set('n', '<leader>ee', 'oif err != nil {<CR>}<Esc>Oreturn err<esc>', { noremap = true, silent = true, desc = 'if err != nil return' })
-            vim.keymap.set('n', '<leader>ei', 'oif err != nil {<CR>}<Esc>O', { noremap = true, silent = true, desc = 'if err != nil impl' })
+            vim.keymap.set('n', '<leader>ee', 'oif err != nil {<CR>}<Esc>Oreturn err<esc>',
+              { noremap = true, silent = true, desc = 'if err != nil return' })
+            vim.keymap.set('n', '<leader>ei', 'oif err != nil {<CR>}<Esc>O',
+              { noremap = true, silent = true, desc = 'if err != nil impl' })
             vim.keymap.set(
               'n',
               '<leader>el',
@@ -962,7 +964,7 @@ require('lazy').setup({
   require 'kickstart.plugins.indent_line',
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
-  require 'kickstart.plugins.neo-tree',
+  -- require 'kickstart.plugins.neo-tree',
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
